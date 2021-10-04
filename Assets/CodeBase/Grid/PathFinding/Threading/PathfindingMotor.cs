@@ -1,36 +1,29 @@
-﻿using System;
-using System.Collections;
-using CodeBase.Infrastructure;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 
-namespace CodeBase.Grid.PathFinding
+namespace CodeBase.Grid.PathFinding.Threading
 {
-    public class PathfindingMotor : MonoBehaviour
+    public class PathfindingMotor : CharacterMotor
     {
-        [SerializeField] private float _speed;
-        [SerializeField] private float _angularSpeed;
-        [SerializeField] private int _turnDistance;
-        [Range(0.1f, 15f)]
-        [SerializeField] private float _stoppingDistance;
-
         private PathRequestManager _pathRequestManager;
         private GridPath _currentPath;
         private Coroutine _currentCoroutine;
+        private WaitForFixedUpdate _waitForFixedUpdate;
 
-        public void Construct(PathRequestManager pathRequestManager)
+        public override void Construct(PathRequestManager pathRequestManager)
         {
             _pathRequestManager = pathRequestManager;
+            _waitForFixedUpdate = new WaitForFixedUpdate();
         }
 
-        public void MoveTo(Transform target)
+        public override void MoveTo(Transform target)
         {
             var pathRequest = new PathRequest(
                 start: transform.position,
                 end: target.position,
                 callBack: StartMovement,
-                _turnDistance,
-                _stoppingDistance);
+                TurnDistance,
+                StoppingDistance);
 
             _pathRequestManager.RequestPath(pathRequest, gameObject);
         }
@@ -58,20 +51,24 @@ namespace CodeBase.Grid.PathFinding
             {
                 if (turnBoundary.HasCrossedLine(transform.position.AsVector2()))
                 {
-                    waypointIndex++;
-                    turnBoundary = path[waypointIndex];
+                    if (waypointIndex < path.LastElementIndex)
+                    {
+                        waypointIndex++;
+                        turnBoundary = path[waypointIndex];
+                    }
                 }
                 MoveTowards(path.LookPoints[waypointIndex]);
 
                 mustMove = !CrossedStoppingDistance(waypointIndex);
-                yield return null;
+                _waitForFixedUpdate = new WaitForFixedUpdate();
+                yield return _waitForFixedUpdate;
             }
         }
         
 
         private bool CrossedStoppingDistance(int waypointIndex)
         {
-            if (_currentPath.StopDistanceIndex == waypointIndex)
+            if (_currentPath.StopDistanceIndex <= waypointIndex)
                 if (ReachedStoppingDistance(_currentPath.LookPoints[waypointIndex]))
                     return true;
 
@@ -79,13 +76,13 @@ namespace CodeBase.Grid.PathFinding
         }
 
         private bool ReachedStoppingDistance(Vector3 position) => 
-            transform.position.SqrDistanceTo(position) < _stoppingDistance * _stoppingDistance;
+            transform.position.SqrDistanceTo(position) < StoppingDistance * StoppingDistance;
 
         private void MoveTowards(Vector3 currentWaypoint)
         {
             Quaternion targetRotation = Quaternion.LookRotation(currentWaypoint - transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _angularSpeed);
-            transform.Translate(Vector3.forward * (_speed * Time.deltaTime), Space.Self);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * AngularSpeed);
+            transform.Translate(Vector3.forward * (Speed * Time.deltaTime), Space.Self);
         }
 
         private void OnDrawGizmos()

@@ -1,5 +1,6 @@
 ﻿using CodeBase.Grid;
 using CodeBase.Grid.PathFinding;
+using CodeBase.Grid.PathFinding.Threading;
 using CodeBase.Infrastructure.AssetsManagement;
 using CodeBase.Infrastructure.Factories;
 using CodeBase.Infrastructure.Services;
@@ -59,7 +60,8 @@ namespace CodeBase.Infrastructure.GameStates
 
         private PathRequestManager CreatePathRequestService(PlaneGrid grid)
         {
-            return new PathRequestManager(grid, _services.Single<IDispatcher>());
+            PathGenerator pathGenerator = new PathGenerator_DotNetThreading(_services.Single<IDispatcher>());
+            return new PathRequestManager(grid, pathGenerator);
         }
 
         private void CreateFactories(PathRequestManager pathRequestManager)

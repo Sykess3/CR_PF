@@ -28,9 +28,6 @@ namespace CodeBase.Grid
             StopDistanceIndex = FindStopDistanceIndex(stopDistance);
         }
 
-        public  Line LastWaypoint() => 
-            _turnBoundaries[_turnBoundaries.LastElementIndex()];
-
         private Line[] FindTurnBoundaries(Vector3 startPos)
         {
             var turnBoundaries = new Line[_lookPoints.Length];

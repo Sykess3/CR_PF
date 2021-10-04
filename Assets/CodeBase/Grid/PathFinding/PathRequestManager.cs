@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using CodeBase.Infrastructure;
-using CodeBase.Infrastructure.Services.Dispatcher;
 using UnityEngine;
 
 namespace CodeBase.Grid.PathFinding
@@ -14,12 +12,12 @@ namespace CodeBase.Grid.PathFinding
             new Dictionary<GameObject, PathFinder>();
 
         private readonly PlaneGrid _grid;
-        private readonly IDispatcher _dispatcher;
+        private readonly PathGenerator _pathGenerator;
 
-        public PathRequestManager(PlaneGrid grid, IDispatcher dispatcher)
+        public PathRequestManager(PlaneGrid grid, PathGenerator pathGenerator)
         {
             _grid = grid;
-            _dispatcher = dispatcher;
+            _pathGenerator = pathGenerator;
         }
 
         public void RequestPath(PathRequest request, GameObject requester)
@@ -28,20 +26,8 @@ namespace CodeBase.Grid.PathFinding
                 _cachedPathFinders.Add(requester, new PathFinder(_grid));
 
 
-            Task.Run(() =>
-                GeneratePaths(request, _cachedPathFinders[requester]));
+            _pathGenerator.Generate(request, _cachedPathFinders[requester]); 
         }
-
-        private void GeneratePaths(PathRequest currentRequest, PathFinder pathFinder)
-        {
-            Vector3[] waypoints = pathFinder.Find(currentRequest.Start, currentRequest.End);
-
-            _dispatcher.Invoke(() =>
-                currentRequest.CallBack(new GridPath(
-                    waypoints,
-                    currentRequest.Start,
-                    currentRequest.TurnDistance,
-                    currentRequest.StoppingDistance)));
-        }
+        
     }
 }

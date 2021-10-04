@@ -110,10 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57eee6ca0ce44cbb250e9decdd57cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _angularSpeed: 4
-  _turnDistance: 3
-  _stoppingDistance: 1
+  Speed: 4
+  AngularSpeed: 3
+  TurnDistance: 4
+  StoppingDistance: 2.79
 --- !u!114 &4787020686516540345
 MonoBehaviour:
   m_ObjectHideFlags: 0

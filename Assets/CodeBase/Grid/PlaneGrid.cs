@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CodeBase.Grid.PathFinding;
 using CodeBase.Infrastructure;
 using UnityEngine;
 

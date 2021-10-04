@@ -1,4 +1,5 @@
 ﻿using CodeBase.Grid.PathFinding;
+using CodeBase.Grid.PathFinding.Threading;
 using CodeBase.Infrastructure;
 using CodeBase.Infrastructure.AssetsManagement;
 using CodeBase.Infrastructure.Factories;
@@ -20,7 +21,7 @@ namespace CodeBase.Units
         {
             GameObject unitObject = _assets.Instantiate(AssetsPaths.Unit, at);
             unitObject.GetComponent<UnitMovement>().Construct(target);
-            unitObject.GetComponent<PathfindingMotor>().Construct(_pathRequestManager);
+            unitObject.GetComponent<CharacterMotor>().Construct(_pathRequestManager);
             return unitObject;
         } 
     }

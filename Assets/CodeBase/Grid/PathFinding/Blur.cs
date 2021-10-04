@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.Grid
+namespace CodeBase.Grid.PathFinding
 {
     public static class Blur
     {

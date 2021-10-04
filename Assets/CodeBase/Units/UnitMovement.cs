@@ -8,7 +8,7 @@ namespace CodeBase.Units
 {
     public class UnitMovement : MonoBehaviour
     {
-        [SerializeField] private PathfindingMotor _motor;
+        [SerializeField] private CharacterMotor _motor;
         private Transform _target;
 
         public void Construct(Transform target)

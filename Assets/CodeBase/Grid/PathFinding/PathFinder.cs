@@ -26,18 +26,17 @@ namespace CodeBase.Grid.PathFinding
         {
             Node start = _grid.NodeFromWorldPosition(from);
             Node target = _grid.NodeFromWorldPosition(to);
-            if (start.Walkable && target.Walkable)
-            {
-                _openNodes.Add(start);
+            if (!target.Walkable)
+                return new Vector3[0];
+            
+            _openNodes.Add(start);
 
-                AStartFind(target);
-                return RetracePath(start, target);
-            }
+            AStarFind(target);
+            return RetracePath(start, target);
 
-            return new Vector3[0];
         }
 
-        private void AStartFind(Node target)
+        private void AStarFind(Node target)
         {
             while (_openNodes.Count > 0)
             {
