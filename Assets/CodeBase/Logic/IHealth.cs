@@ -1,4 +1,4 @@
-﻿namespace CodeBase.Units
+﻿namespace CodeBase.Logic
 {
     public interface IHealth
     {

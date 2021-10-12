@@ -62,8 +62,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shootPoint: {fileID: 4344964121618775127}
   _projectilesSceneName: Projectiles
-  _range: 2
   _delay: 1
+  _trajectoryData:
+    Trajectory:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.00015165284
+        value: 0.01982595
+        inSlope: 0.1491651
+        outSlope: 0.1491651
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.053746913
+      - serializedVersion: 3
+        time: 0.9974785
+        value: -0.029587567
+        inSlope: 0.0009859804
+        outSlope: 0.0009859804
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.07259307
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    TrajectoryOffsetCoefficient: 100
   _projectilePrefab: {fileID: 5249915501192344363, guid: 0cf00d6c3a1576841879a8fd6bedbeaa, type: 3}
 --- !u!1 &3985189509059160460
 GameObject:

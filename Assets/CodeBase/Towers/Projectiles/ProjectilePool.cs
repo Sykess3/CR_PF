@@ -1,7 +1,7 @@
 ﻿using CodeBase.DataStructures.ObjectPool;
 using JetBrains.Annotations;
 
-namespace CodeBase.Towers
+namespace CodeBase.Towers.Projectiles
 {
     public class ProjectilePool : GenericObjectPool<Projectile>
     {

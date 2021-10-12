@@ -5,9 +5,11 @@ namespace CodeBase.Grid.PathFinding
 {
     public abstract class CharacterMotor : MonoBehaviour
     {
-        [SerializeField] protected float Speed;
+        [SerializeField] protected float MovementSpeed;
         [SerializeField] protected float AngularSpeed;
         [SerializeField] protected int TurnDistance;
+
+        public float CurrentSpeed { get; protected set; }
 
         [Range(0.1f, 15f)]
         [SerializeField]

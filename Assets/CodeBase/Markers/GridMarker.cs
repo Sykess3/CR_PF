@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CodeBase.Markers
 {
-    public class GridMarker : MonoBehaviour
+    public class GridMarker : Marker
     {
     }
 }

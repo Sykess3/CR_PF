@@ -18,8 +18,6 @@ namespace CodeBase.Towers
         {
             _detectedEnemyUnits = new Collider[1];
             _unitsMask = (1 << LayerMask.NameToLayer("Unit"));
-
-            _arrowslit.enabled = false;
         }
 
         private void Update() => FindEnemyUnitsInRadius();
@@ -29,9 +27,12 @@ namespace CodeBase.Towers
             Physics.OverlapSphereNonAlloc(transform.position, _radius, _detectedEnemyUnits, _unitsMask);
             if (_detectedEnemyUnits[0] != null)
             {
-                _arrowslit.enabled = true;
+                _arrowslit.StartShoot();
                 _arrowslit.Target = _detectedEnemyUnits[0].transform;
+                return;
             }
+
+            _arrowslit.StopShoot();
         }
     }
 }
