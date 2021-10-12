@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeBase.DataStructures
+namespace CodeBase.DataStructures.Heap
 {
     public interface IHeapItem<in T> : IComparable<T>
     {

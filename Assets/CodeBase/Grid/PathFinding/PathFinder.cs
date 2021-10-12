@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeBase.DataStructures;
+using CodeBase.DataStructures.Heap;
 using UnityEngine;
 
 namespace CodeBase.Grid.PathFinding

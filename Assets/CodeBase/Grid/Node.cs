@@ -1,4 +1,5 @@
 using CodeBase.DataStructures;
+using CodeBase.DataStructures.Heap;
 using UnityEngine;
 
 namespace CodeBase.Grid

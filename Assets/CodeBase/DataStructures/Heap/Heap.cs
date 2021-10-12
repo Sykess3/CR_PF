@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeBase.DataStructures
+namespace CodeBase.DataStructures.Heap
 {
     public class Heap<T> where T : IHeapItem<T>
     {
