@@ -46,16 +46,16 @@ namespace CodeBase.Infrastructure.GameStates
             PlaneGrid grid = CreatePathGrid();
             PathRequestManager pathRequestManager = CreatePathRequestService(grid);
             
-            CreateFactories(pathRequestManager);
-            Transform target = CreateTarget();
-            CreateUnits(target);
+            var baseTowers = CreateBaseTowers();
+            CreateFactories(pathRequestManager, baseTowers);
+            CreateUnits();
 
             _gameStateMachine.Enter<GameLoopState>();
         }
 
-        private void CreateUnitFactory(PathRequestManager pathRequestManager)
+        private void CreateUnitFactory(PathRequestManager pathRequestManager, Transform[] baseTowers)
         {
-            _unitsFactory = new UnitsFactory(pathRequestManager, _assets);
+            _unitsFactory = new UnitsFactory(pathRequestManager, _assets, baseTowers);
         }
 
         private PathRequestManager CreatePathRequestService(PlaneGrid grid)
@@ -64,24 +64,28 @@ namespace CodeBase.Infrastructure.GameStates
             return new PathRequestManager(grid, pathGenerator);
         }
 
-        private void CreateFactories(PathRequestManager pathRequestManager)
+        private void CreateFactories(PathRequestManager pathRequestManager, Transform[] baseTowers)
         {
-            CreateUnitFactory(pathRequestManager);
+            CreateUnitFactory(pathRequestManager, baseTowers);
         }
 
         private PlaneGrid CreatePathGrid() => 
             _environmentFactory.CreateGrid().GetComponent<PlaneGrid>();
 
-        private Transform CreateTarget()
+        private Transform[] CreateBaseTowers()
         {
             var targetObject = Resources.Load<GameObject>(AssetsPaths.Target);
 
-            return Object.Instantiate(targetObject, new Vector3(1.9f, 0f, -6.94f), Quaternion.identity).transform;
+
+            Transform transform1 = Object.Instantiate(targetObject, new Vector3(1.9f, 0f, -6.94f), Quaternion.identity).transform;
+            Transform transform2 = Object.Instantiate(targetObject, new Vector3(15.11f, 0f, -1.99f), Quaternion.identity).transform;
+            //Transform transform3 = Object.Instantiate(targetObject, new Vector3(5.96f, 0f, 3.57f), Quaternion.identity).transform;
+            return new[] {transform1, transform2};
         }
 
-        private void CreateUnits(Transform target)
+        private void CreateUnits()
         {
-            _unitsFactory.CreateUnit(new Vector3(14.5f, 0, 14.5f), target);
+            _unitsFactory.CreateUnit(at: new Vector3(14.5f, 0, 14.5f));
             // _unitsFactory.CreateUnit(new Vector3(-16.5f, 0, 8.5f), target);
             // _unitsFactory.CreateUnit(new Vector3(14.5f, 0, -14.5f), target);
             // _unitsFactory.CreateUnit(new Vector3(-16.5f, 0, -14.5f), target);

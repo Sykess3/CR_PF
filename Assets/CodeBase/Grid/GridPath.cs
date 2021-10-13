@@ -15,17 +15,20 @@ namespace CodeBase.Grid
 
         public int Length => _turnBoundaries.Length;
         public int LastElementIndex => Length - 1;
+        public int LengthCost { get; }
 
         public Line this[int i] => _turnBoundaries[i];
 
         public int StopDistanceIndex { get; }
 
-        public GridPath(Vector3[] waypoints, Vector3 startPos, float turnDistance, float stopDistance)
+        public GridPath(Vector3[] waypoints, Vector3 startPos, float turnDistance, float stopDistance,
+            int lengthCost)
         {
             _lookPoints = waypoints;
             _turnDistance = turnDistance;
             _turnBoundaries = FindTurnBoundaries(startPos);
             StopDistanceIndex = FindStopDistanceIndex(stopDistance);
+            LengthCost = lengthCost;
         }
 
         private Line[] FindTurnBoundaries(Vector3 startPos)

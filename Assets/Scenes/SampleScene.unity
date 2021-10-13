@@ -351,7 +351,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1167616765232583899, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
       propertyPath: _radius
-      value: 6
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1167616765232583899, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
       propertyPath: _arrowslit
@@ -412,6 +412,38 @@ PrefabInstance:
     - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
       propertyPath: _range
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[1].time
+      value: 1.0000021
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[1].value
+      value: 0.0056559807
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[0].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[1].inSlope
+      value: -1.8660456
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[0].outSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[1].inWeight
+      value: 0.041668743
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827148519409681317, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}
+      propertyPath: _trajectory.m_Curve.Array.data[1].outSlope
+      value: -1.8660456
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 897c76125d31bb84faf10a2a32308cd9, type: 3}

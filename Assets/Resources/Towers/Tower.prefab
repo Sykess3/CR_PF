@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2559435187173974670}
   - component: {fileID: 1167616765232583899}
   - component: {fileID: 4827148519409681317}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4344964121618775127}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ShootPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 6242652010019628879}
   - component: {fileID: 3890861816324802415}
   - component: {fileID: 4005271035808460243}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,17 +5,22 @@ namespace CodeBase.Grid.PathFinding
 {
     public abstract class CharacterMotor : MonoBehaviour
     {
-        [SerializeField] protected float MovementSpeed;
-        [SerializeField] protected float AngularSpeed;
-        [SerializeField] protected int TurnDistance;
+        [SerializeField] protected float _movementSpeed;
+        [SerializeField] protected float _angularSpeed;
+        [SerializeField] protected int _turnDistance;
+
+        [Range(0.1f, 15f)]
+        [SerializeField] protected float _stoppingDistance;
+
+        public float MovementSpeed => _movementSpeed;
+
+        public float AngularSpeed => _angularSpeed;
+
+        public int TurnDistance => _turnDistance;
+        public float StoppingDistance => _stoppingDistance;
 
         public float CurrentSpeed { get; protected set; }
 
-        [Range(0.1f, 15f)]
-        [SerializeField]
-        protected float StoppingDistance;
-
-        public virtual void Construct(PathRequestManager pathRequestManager) { }
-        public abstract void MoveTo(Transform target);
+        public abstract void MoveAcross(GridPath path);
     }
 }

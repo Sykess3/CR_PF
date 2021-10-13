@@ -11,17 +11,19 @@ namespace CodeBase.Units
     {
         private readonly PathRequestManager _pathRequestManager;
         private readonly IAssets _assets;
+        private readonly Transform[] _baseTowers;
 
-        public UnitsFactory(PathRequestManager pathRequestManager, IAssets assets)
+        public UnitsFactory(PathRequestManager pathRequestManager, IAssets assets, Transform[] baseTowers)
         {
+            
             _pathRequestManager = pathRequestManager;
             _assets = assets;
+            _baseTowers = baseTowers;
         }
-        public GameObject CreateUnit(Vector3 at, Transform target)
+        public GameObject CreateUnit(Vector3 at)
         {
             GameObject unitObject = _assets.Instantiate(AssetsPaths.Unit, at);
-            unitObject.GetComponent<UnitMovement>().Construct(target);
-            unitObject.GetComponent<CharacterMotor>().Construct(_pathRequestManager);
+            unitObject.GetComponent<UnitAggro>().Construct(_pathRequestManager, _baseTowers);
             return unitObject;
         } 
     }

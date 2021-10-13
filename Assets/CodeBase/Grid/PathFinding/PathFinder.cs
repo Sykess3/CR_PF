@@ -23,16 +23,19 @@ namespace CodeBase.Grid.PathFinding
         }
         
 
-        public Vector3[] Find(Vector3 from, Vector3 to)
+        public Vector3[] Find(Vector3 from, Vector3 to, out int pathLenghtCost)
         {
             Node start = _grid.NodeFromWorldPosition(from);
             Node target = _grid.NodeFromWorldPosition(to);
+            
+            pathLenghtCost = 0;
             if (!target.Walkable)
                 return new Vector3[0];
             
             _openNodes.Add(start);
 
             AStarFind(target);
+            pathLenghtCost = target.G_Cost;
             return RetracePath(start, target);
 
         }
@@ -106,8 +109,9 @@ namespace CodeBase.Grid.PathFinding
         {
             List<Vector3> waypoints = new List<Vector3>();
             Vector2 directionOld = Vector2.zero;
+            waypoints.Add(path[0].WorldPosition);
 
-            for (int i = 1; i < path.Count; i++)
+            for (int i = 1; i < path.Count - 1; i++)
             {
                 Vector3 nextNodePosition = path[i - 1].WorldPosition;
                 Vector3 currentNodePosition = path[i].WorldPosition;
@@ -118,9 +122,8 @@ namespace CodeBase.Grid.PathFinding
 
                 directionOld = directionNew;
             }
-            
+
             return waypoints.ToArray();
         }
-        
     }
 }

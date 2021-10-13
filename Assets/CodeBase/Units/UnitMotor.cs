@@ -1,36 +1,21 @@
 ﻿using System.Collections;
+using CodeBase.Grid;
+using CodeBase.Grid.PathFinding;
 using UnityEngine;
 
-namespace CodeBase.Grid.PathFinding.Threading
+namespace CodeBase.Units
 {
-    public class PathfindingMotor : CharacterMotor
+    public class UnitMotor : CharacterMotor
     {
-        private PathRequestManager _pathRequestManager;
         private GridPath _currentPath;
         private Coroutine _currentCoroutine;
         private WaitForFixedUpdate _waitForFixedUpdate;
         private float _speedFactor;
         private bool _needDecreaseMovementSpeed;
 
-        public override void Construct(PathRequestManager pathRequestManager)
-        {
-            _pathRequestManager = pathRequestManager;
-            _waitForFixedUpdate = new WaitForFixedUpdate();
-        }
+        private void Start() => _waitForFixedUpdate = new WaitForFixedUpdate();
 
-        public override void MoveTo(Transform target)
-        {
-            var pathRequest = new PathRequest(
-                start: transform.position,
-                end: target.position,
-                callBack: StartMovement,
-                TurnDistance,
-                StoppingDistance);
-
-            _pathRequestManager.RequestPath(pathRequest, gameObject);
-        }
-        
-        private void StartMovement(GridPath path)
+        public override void MoveAcross(GridPath path)
         {
             if (path.Length == 0)
                 return;
@@ -39,10 +24,10 @@ namespace CodeBase.Grid.PathFinding.Threading
             if (_currentCoroutine != null) 
                 StopCoroutine(_currentCoroutine);
 
-            _currentCoroutine = StartCoroutine(MoveAcross(_currentPath));
+            _currentCoroutine = StartCoroutine(StartMovement(_currentPath));
         }
         
-        private IEnumerator MoveAcross(GridPath path)
+        private IEnumerator StartMovement(GridPath path)
         {
             MovementStarted();
 
@@ -85,26 +70,35 @@ namespace CodeBase.Grid.PathFinding.Threading
             return false;
         }
 
-        private bool ReachedStoppingDistance(Vector3 position) => 
-            transform.position.SqrDistanceTo(position) < StoppingDistance * StoppingDistance;
+        private bool ReachedStoppingDistance(Vector3 position)
+        {
+            var sqrDistanceTo = transform.position.SqrDistanceTo(position);
+            var stoppingDistance = _stoppingDistance * _stoppingDistance;
+            return sqrDistanceTo < stoppingDistance;
+        }
 
         private void MoveTowards(Vector3 currentWaypoint)
         {
-            CurrentSpeed = MovementSpeed * SpeedFactor();
+            CurrentSpeed = _movementSpeed * SpeedFactor(currentWaypoint);
             Quaternion targetRotation = Quaternion.LookRotation(currentWaypoint - transform.position);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * AngularSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * _angularSpeed);
             transform.Translate(Vector3.forward * (CurrentSpeed * Time.deltaTime), Space.Self);
         }
 
-        private float SpeedFactor()
+        private float SpeedFactor(Vector3 currentWaypoint)
         {
             if (_needDecreaseMovementSpeed)
-                _speedFactor -= Time.deltaTime * 2;
+                _speedFactor -= Time.deltaTime * 2 - DistanceFactor(currentWaypoint);
             else
                 _speedFactor += Time.deltaTime; 
             
             _speedFactor = Mathf.Clamp(_speedFactor, 0f, 1f);
             return _speedFactor;
+        }
+
+        private float DistanceFactor(Vector3 currentWaypoint)
+        {
+            return (currentWaypoint - transform.position).sqrMagnitude / 10;
         }
 
         private void MovementStarted()
