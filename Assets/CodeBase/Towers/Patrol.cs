@@ -17,7 +17,7 @@ namespace CodeBase.Towers
         private void Start()
         {
             _detectedEnemyUnits = new Collider[1];
-            _unitsMask = (1 << LayerMask.NameToLayer("Attackable"));
+            _unitsMask = (1 << LayerMask.NameToLayer("RedUnit"));
         }
 
         private void Update() => FindEnemyUnitsInRadius();

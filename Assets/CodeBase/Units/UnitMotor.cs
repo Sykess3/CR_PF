@@ -55,6 +55,9 @@ namespace CodeBase.Units
         }
 
 
+        public override bool ReachedStoppingDistance(Vector3 position) => 
+            transform.position.SqrDistanceTo(position) < _stoppingDistance * _stoppingDistance;
+
         private bool CrossedStoppingDistance(int waypointIndex)
         {
             if (_currentPath.StopDistanceIndex <= waypointIndex)
@@ -68,13 +71,6 @@ namespace CodeBase.Units
             }
 
             return false;
-        }
-
-        private bool ReachedStoppingDistance(Vector3 position)
-        {
-            var sqrDistanceTo = transform.position.SqrDistanceTo(position);
-            var stoppingDistance = _stoppingDistance * _stoppingDistance;
-            return sqrDistanceTo < stoppingDistance;
         }
 
         private void MoveTowards(Vector3 currentWaypoint)

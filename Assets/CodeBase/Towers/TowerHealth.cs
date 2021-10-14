@@ -2,13 +2,11 @@
 using CodeBase.Logic;
 using UnityEngine;
 
-namespace CodeBase.Units
+namespace CodeBase.Towers
 {
-    public class UnitHealth : MonoBehaviour, IHealth
+    public class TowerHealth : MonoBehaviour, IHealth
     {
-        [Header("Refs")] 
-        [SerializeField] private UnitAnimator _animator;
-        [Space] [SerializeField] private float _health;
+        [SerializeField] private float _health;
 
         public event Action<float> Hit;
         public event Action Died;
@@ -16,11 +14,9 @@ namespace CodeBase.Units
         public void TakeDamage(float amount)
         {
             _health -= amount;
-            _animator.PlayHit();
             if (_health <= 0)
             {
                 _health = 0;
-                _animator.PlayDie();
                 Died?.Invoke();
             }
 

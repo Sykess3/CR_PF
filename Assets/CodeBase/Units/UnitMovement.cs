@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using CodeBase.Grid;
+﻿using CodeBase.Grid;
 using CodeBase.Grid.PathFinding;
-using CodeBase.Grid.PathFinding.Threading;
 using UnityEngine;
 
 namespace CodeBase.Units

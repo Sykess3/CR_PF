@@ -9,7 +9,7 @@ namespace CodeBase.Editor.Units
         [DrawGizmo(GizmoType.Active | GizmoType.Pickable | GizmoType.NonSelected)]
         public static void RenderCustomGizmo(UnitAggro unitAggro, GizmoType gizmo)
         {
-            Gizmos.DrawWireSphere(unitAggro.transform.position, unitAggro.Radius);
+            Gizmos.DrawWireSphere(unitAggro.gameObject.transform.position, unitAggro.Radius);
         }
     }
 }

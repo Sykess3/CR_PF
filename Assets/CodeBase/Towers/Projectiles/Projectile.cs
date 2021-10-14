@@ -1,4 +1,5 @@
-﻿using CodeBase.DataStructures.ObjectPool;
+﻿using System;
+using CodeBase.DataStructures.ObjectPool;
 using CodeBase.Logic;
 using UnityEngine;
 
@@ -13,9 +14,16 @@ namespace CodeBase.Towers.Projectiles
         [Space]
         [SerializeField] private float _damage;
 
+        private int _unitMask;
+
         private GenericObjectPool<Projectile> _nativePool => (this as IObjectPoolItem<Projectile>).NativePool;
 
         GenericObjectPool<Projectile> IObjectPoolItem<Projectile>.NativePool { get; set; }
+
+        private void Start()
+        {
+            _unitMask = 1 << LayerMask.NameToLayer("RedUnit");
+        }
 
         public void Launch(Transform target, TrajectoryData trajectoryData)
         {

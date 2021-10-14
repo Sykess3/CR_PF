@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _motor: {fileID: -6749547240732334954}
-  _radius: 0
+  _radius: 10
 --- !u!1 &6127878804670699169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1576,7 +1576,7 @@ GameObject:
   - component: {fileID: 7093223422853074849}
   - component: {fileID: 3495314803244877255}
   m_Layer: 10
-  m_Name: Collider
+  m_Name: HurtBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

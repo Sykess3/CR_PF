@@ -7,7 +7,6 @@ namespace CodeBase.Grid.PathFinding.Threading
     class PathGenerator_DotNetThreading : PathGenerator
     {
         private readonly IDispatcher _dispatcher;
-        private object _locker;
 
         public PathGenerator_DotNetThreading(IDispatcher dispatcher)
         {
@@ -26,14 +25,15 @@ namespace CodeBase.Grid.PathFinding.Threading
             {
                 Vector3[] waypoints = GeneratePaths(currentRequest, pathFinder, out int pathLengthCost);
 
-                _dispatcher.Invoke(() =>
-                    currentRequest.CallBack(new GridPath(
-                        waypoints,
-                        currentRequest.Start,
-                        currentRequest.TurnDistance,
-                        currentRequest.StoppingDistance,
-                        pathLengthCost)
-                    ));
+                if (currentRequest.CallBack != null)
+                    _dispatcher.Invoke(() =>
+                        currentRequest.CallBack(new GridPath(
+                            waypoints,
+                            currentRequest.Start,
+                            currentRequest.TurnDistance,
+                            currentRequest.StoppingDistance,
+                            pathLengthCost)
+                        ));
             }
         }
     }

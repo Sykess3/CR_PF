@@ -22,5 +22,6 @@ namespace CodeBase.Grid.PathFinding
         public float CurrentSpeed { get; protected set; }
 
         public abstract void MoveAcross(GridPath path);
+        public abstract bool ReachedStoppingDistance(Vector3 position);
     }
 }

@@ -1,18 +1,26 @@
 ﻿using System;
 using CodeBase.Grid;
 using CodeBase.Grid.PathFinding;
+using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Units
 {
     public class UnitAggro : MonoBehaviour
     {
+        [Header("Refs")]
         [SerializeField] private CharacterMotor _motor;
+        [Space]
         [SerializeField] private float _radius;
         private PathRequestManager _pathRequestManager;
         private Transform[] _baseTowers;
         private LayerMask _attackableMask;
         private Collider[] _nearestEnemy;
+        private GridPath _lesserPath;
+        private int _callBackCount_OnFoundNearestBaseTower;
+
+        public Transform Target { get; private set; }
+        public event Action<GridPath> FoundedNearestEnemy;
 
         public float Radius => _radius;
 
@@ -26,46 +34,62 @@ namespace CodeBase.Units
 
         private void Start()
         {
-            _attackableMask = 1 << LayerMask.NameToLayer("Attackable");
+            _attackableMask =
+                (1 << LayerMask.NameToLayer("BlueUnit"));
+
             _nearestEnemy = new Collider[1];
         }
 
-        public void FindNearestBaseTower(Action<GridPath> callback)
+        private void Update()
         {
+            if (Target != null)
+                if (IsMovingTowardsTarget())
+                    return;
+
+            FindNearestEnemy();
+        }
+
+        private void FindNearestEnemy()
+        {
+            Target = null;
+            _nearestEnemy[0] = null;
+            Physics.OverlapSphereNonAlloc(transform.position, Radius, _nearestEnemy, _attackableMask);
+            if (_nearestEnemy[0] != null)
+            {
+                Target = _nearestEnemy[0].transform;
+                CreatePathRequest(FoundedNearestEnemy, _nearestEnemy[0].transform);
+            }
+        }
+
+        private void FindNearestBaseTower()
+        {
+            ResetCallbackFields();
             foreach (var tower in _baseTowers)
-            {
-                var pathRequest = CreatePathRequest(callback, tower);
-
-                _pathRequestManager.RequestPath(pathRequest, gameObject);
-            }
+                CreatePathRequest(OnFoundNearestBaseTower, tower);
         }
 
-        public void FindNearestEnemy(Action<GridPath> callback)
+        private void OnFoundNearestBaseTower(GridPath path)
         {
-            Physics.OverlapSphereNonAlloc(transform.position, _radius, _nearestEnemy, _attackableMask);
-
-            if (_nearestEnemy[0] == null)
-            {
-                callback.Invoke(EmptyPath());
+            _callBackCount_OnFoundNearestBaseTower++;
+            if (path.LengthCost == 0)
                 return;
-            }
 
-            var pathRequest = CreatePathRequest(callback, _nearestEnemy[0].transform);
-            _pathRequestManager.RequestPath(pathRequest, gameObject);
+            if (_lesserPath == null)
+                _lesserPath = path;
+            else if (_lesserPath.LengthCost > path.LengthCost)
+                _lesserPath = path;
+
+            if (_callBackCount_OnFoundNearestBaseTower == BaseTowersCount)
+                FoundedNearestEnemy?.Invoke(_lesserPath);
         }
 
-        private static GridPath EmptyPath()
+        private void ResetCallbackFields()
         {
-            var emptyArray = new Vector3[0];
-            return new GridPath(
-                emptyArray,
-                Vector3.zero,
-                0,
-                0,
-                0);
+            _lesserPath = null;
+            _callBackCount_OnFoundNearestBaseTower = 0;
         }
 
-        private PathRequest CreatePathRequest(Action<GridPath> callback, Transform target)
+        private void CreatePathRequest(Action<GridPath> callback, Transform target)
         {
             var pathRequest = new PathRequest(
                 start: transform.position,
@@ -73,7 +97,11 @@ namespace CodeBase.Units
                 callBack: callback,
                 _motor.TurnDistance,
                 _motor.StoppingDistance);
-            return pathRequest;
+
+            _pathRequestManager.RequestPath(pathRequest, gameObject);
         }
+        
+        private bool IsMovingTowardsTarget() => 
+            !_motor.ReachedStoppingDistance(Target.position) && _motor.CurrentSpeed > 0;
     }
 }
